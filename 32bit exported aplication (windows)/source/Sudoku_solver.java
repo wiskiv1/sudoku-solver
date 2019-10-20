@@ -20,6 +20,10 @@ public class Sudoku_solver extends PApplet {
 Space[][] grid = new Space[9][9];
 boolean solving = false;
 
+//brute forcing stuff when it's stuck
+Space[][] savepoint = new Space[9][9];
+int protection = 0;
+
 public void setup() {
   
 
@@ -40,9 +44,9 @@ public void draw() {
       collum.show();
     }
   }
-  
+
   //solving sudoku if enter solving == true
-  if (solving) {
+  if (solving && protection < 100) {
     for (Space[] row : grid) {
       for (Space collum : row) {
         updateAll();
@@ -51,6 +55,18 @@ public void draw() {
         collum.check2();
       }
     }
+    protection++;
+  }
+
+  //when protection == 1000 insert a random value in a square that doesn't have a value jet
+  if (protection >= 100 && savepoint[0][0] == null) {
+    savepoint = grid;
+    fillrandom();
+    protection = 0;
+  } else if (protection >= 100 && savepoint[0][0] != null) {
+    grid = savepoint;
+    fillrandom();
+    protection = 0;
   }
 
   //check if sudoku is solved but not really
@@ -108,6 +124,21 @@ public void updateAll() {
   for (Space[] row : grid) {
     for (Space collum : row) {
       collum.updateOptions();
+    }
+  }
+}
+
+//function to insert random number in empty spot
+public void fillrandom() {
+  int x = floor(random(0,9));
+  int y = floor(random(0,9));
+  
+  if (grid[y][x].value == 0) {
+    while (grid[y][x].value == 0) {
+      int nv = floor(random(0,9));
+      if (grid[y][x].possibleOptions[nv] == true) {
+        grid[y][x].value = nv + 1;
+      }
     }
   }
 }

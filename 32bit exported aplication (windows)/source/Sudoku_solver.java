@@ -14,6 +14,9 @@ import java.io.IOException;
 
 public class Sudoku_solver extends PApplet {
 
+//made by wiskiv1
+//github.com/wiskiv1/sudoku-solver
+
 Space[][] grid = new Space[9][9];
 boolean solving = false;
 
@@ -37,8 +40,6 @@ public void draw() {
       collum.show();
     }
   }
-
-  updateAll();
   
   //solving sudoku if enter solving == true
   if (solving) {
@@ -52,7 +53,7 @@ public void draw() {
     }
   }
 
-  //check if sudoku is salved
+  //check if sudoku is solved but not really
   int SS = 0;
   for (Space[] row : grid) {
     for (Space collum : row) {
@@ -110,7 +111,6 @@ public void updateAll() {
     }
   }
 }
-
 class Space {
 
   boolean[] possibleOptions = new boolean[9];
@@ -245,7 +245,7 @@ class Space {
   }
 
   public void change(int newvalue) {
-    if (selected && newvalue > 0) {
+    if (selected && newvalue >= 0) {
       value = newvalue;
     }
   }
@@ -301,7 +301,6 @@ public boolean hassub(int posX, int posY, int x) {
     return false;
   }
 }
-
   public void settings() {  size(450, 450); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Sudoku_solver" };

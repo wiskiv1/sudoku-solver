@@ -132,7 +132,7 @@ class Space {
   }
 
   void change(int newvalue) {
-    if (selected && newvalue > 0) {
+    if (selected && newvalue >= 0) {
       value = newvalue;
     }
   }

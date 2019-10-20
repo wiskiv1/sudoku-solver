@@ -1,3 +1,6 @@
+//made by wiskiv1
+//github.com/wiskiv1/sudoku-solver
+
 Space[][] grid = new Space[9][9];
 boolean solving = false;
 
@@ -21,8 +24,6 @@ void draw() {
       collum.show();
     }
   }
-
-  updateAll();
   
   //solving sudoku if enter solving == true
   if (solving) {
@@ -36,7 +37,7 @@ void draw() {
     }
   }
 
-  //check if sudoku is salved
+  //check if sudoku is solved but not really
   int SS = 0;
   for (Space[] row : grid) {
     for (Space collum : row) {

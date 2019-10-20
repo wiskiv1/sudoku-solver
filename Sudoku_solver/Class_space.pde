@@ -136,6 +136,14 @@ class Space {
       value = newvalue;
     }
   }
+  
+  //copying an other objects value's
+  void kopieer(Space ander) {
+    this.value = ander.value;
+    for (int i = 0; i < 9; i++) {
+      this.possibleOptions[i] = ander.possibleOptions[i];
+    }
+  }
 }
 
 

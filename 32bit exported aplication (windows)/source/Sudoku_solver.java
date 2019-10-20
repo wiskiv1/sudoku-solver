@@ -23,6 +23,7 @@ boolean solving = false;
 //brute forcing stuff when it's stuck
 Space[][] savepoint = new Space[9][9];
 int protection = 0;
+boolean stuck = false;
 
 public void setup() {
   
@@ -31,6 +32,13 @@ public void setup() {
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
       grid[i][j] = new Space(j, i);
+    }
+  }
+  
+  // creating all the savepoints
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      savepoint[i][j] = new Space(j, i);
     }
   }
 }
@@ -46,7 +54,7 @@ public void draw() {
   }
 
   //solving sudoku if enter solving == true
-  if (solving && protection < 100) {
+  if (solving && protection < 50) {
     for (Space[] row : grid) {
       for (Space collum : row) {
         updateAll();
@@ -58,13 +66,14 @@ public void draw() {
     protection++;
   }
 
-  //when protection == 1000 insert a random value in a square that doesn't have a value jet
-  if (protection >= 100 && savepoint[0][0] == null) {
-    savepoint = grid;
+  //when protection >= 1000 insert a random value in a square that doesn't have a value jet
+  if (protection >= 50 && stuck == false) {
+    gridSave();
     fillrandom();
     protection = 0;
-  } else if (protection >= 100 && savepoint[0][0] != null) {
-    grid = savepoint;
+    stuck = true;
+  } else if (protection >= 50 && stuck == true) {
+    saveGrid();
     fillrandom();
     protection = 0;
   }
@@ -127,6 +136,24 @@ public void updateAll() {
     }
   }
 }
+
+//functions to copy grid to savepoint and vice versa
+public void gridSave() {
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      savepoint[i][j].kopieer(grid[i][j]);
+    }
+  }
+}
+
+public void saveGrid() {
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      grid[i][j].kopieer(savepoint[i][j]);
+    }
+  }
+}
+
 
 //function to insert random number in empty spot
 public void fillrandom() {
@@ -278,6 +305,14 @@ class Space {
   public void change(int newvalue) {
     if (selected && newvalue >= 0) {
       value = newvalue;
+    }
+  }
+  
+  //copying an other objects value's
+  public void kopieer(Space ander) {
+    this.value = ander.value;
+    for (int i = 0; i < 9; i++) {
+      this.possibleOptions[i] = ander.possibleOptions[i];
     }
   }
 }
